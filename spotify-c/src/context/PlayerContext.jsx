@@ -32,9 +32,16 @@ const PlayerContextProvider = (props) => {
         setPlayStatus(false);
     }
 
+    const playWithId = async (id) => {
+        await setTrack(songsData[id]);
+        await audioRef.current.play();
+        setPlayStatus(true);
+    }
+
     useEffect(()=>{
         setTimeout(() => {
             audioRef.current.ontimeupdate = () => {
+                seekBar.current.style.width = (Math.floor(audioRef.current.currentTime/audioRef.current.duration*100)) + "%";
                 setTime({currentTime:{
                     minutes: Math.floor(audioRef.current.currentTime / 60),
                     seconds: Math.floor(audioRef.current.currentTime % 60),
@@ -55,6 +62,7 @@ const PlayerContextProvider = (props) => {
         playStatus, setPlayStatus,
         time, setTime,
         play, pause,
+        playWithId,
 
     }
 
